@@ -97,6 +97,11 @@ class Proxy
 
         $request = $this->request->withUri($uri);
 
+        // make sure we don't send empty content-length header
+        if ($request->hasHeader('content-length') && empty($request->getHeader('content-length')[0])) {
+            $request = $request->withoutHeader('content-length');
+        }
+
         return $this->client->send($request);
     }
 }
