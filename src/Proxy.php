@@ -70,8 +70,8 @@ class Proxy
 
         // Overwrite target scheme and host.
         $uri = $this->request->getUri()
-                             ->withScheme($target->getScheme())
-                             ->withHost($target->getHost());
+            ->withScheme($target->getScheme())
+            ->withHost($target->getHost());
 
         // Check for custom port.
         if ($port = $target->getPort()) {
@@ -97,9 +97,11 @@ class Proxy
 
         $request = $this->request->withUri($uri);
 
-        // make sure we don't send empty content-length header
-        if ($request->hasHeader('content-length') && empty($request->getHeader('content-length')[0])) {
-            $request = $request->withoutHeader('content-length');
+        // make sure we don't send empty headers
+        foreach ($request->getHeaders() as $headerName => $headerValue) {
+            if (empty($headerValue[0])) {
+                $request = $request->withoutHeader($headerName);
+            }
         }
 
         return $this->client->send($request);
