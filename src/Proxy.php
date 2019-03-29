@@ -10,12 +10,11 @@ use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Uri;
 
 /**
- * place to override some stuff from jenssegers proxy.. until we can create an own library
+ * proxies request from one place to another.. thanks jenssegers for the first approach ;-)
  *
- * @package Graviton\ProxyBundle\Service
- * @author  List of contributors <https://github.com/libgraviton/graviton/graphs/contributors>
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link    http://swisscom.ch
+ * @author   List of contributors <https://github.com/libgraviton/graviton/graphs/contributors>
+ * @license  https://opensource.org/licenses/MIT MIT License
+ * @link     http://swisscom.ch
  */
 class Proxy
 {
