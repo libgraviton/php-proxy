@@ -29,13 +29,38 @@ class Proxy
     private $request;
 
     /**
+     * @var array
+     */
+    private $cleanHeaders;
+
+    /**
+     * @var array
+     */
+    private $cleanResponseHeaders;
+
+    /**
+     * @var array
+     */
+    private $addResponseHeaders;
+
+    /**
      * Proxy constructor.
      *
      * @param Client $client client
+     * @param array  $cleanHeaders         headers to remove before we send request upstream
+     * @param array  $cleanResponseHeaders headers to remove from response
+     * @param array  $addResponseHeaders   headers to add to response before returning
      */
-    public function __construct(Client $client)
-    {
+    public function __construct(
+        Client $client,
+        $cleanHeaders = [],
+        $cleanResponseHeaders = [],
+        $addResponseHeaders = []
+    ) {
         $this->client = $client;
+        $this->cleanHeaders = array_map('strtolower', $cleanHeaders);
+        $this->cleanResponseHeaders = array_map('strtolower', $cleanResponseHeaders);
+        $this->addResponseHeaders = $addResponseHeaders;
     }
 
     /**
@@ -96,13 +121,23 @@ class Proxy
 
         $request = $this->request->withUri($uri);
 
-        // make sure we don't send empty headers
+        // make sure we don't send empty headers or stuff to purge
         foreach ($request->getHeaders() as $headerName => $headerValue) {
-            if (empty($headerValue[0])) {
+            if (in_array(strtolower($headerName), $this->cleanHeaders) || empty($headerValue[0])) {
                 $request = $request->withoutHeader($headerName);
             }
         }
 
-        return $this->client->send($request);
+        $response = $this->client->send($request);
+
+        foreach ($this->cleanResponseHeaders as $headerName) {
+            $response = $response->withoutHeader($headerName);
+        }
+
+        foreach ($this->addResponseHeaders as $headerName => $headerValue) {
+            $response = $response->withHeader($headerName, $headerValue);
+        }
+
+        return $response;
     }
 }
