@@ -16,10 +16,10 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UploadedFileFactoryInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
-use Zend\Diactoros\ResponseFactory;
-use Zend\Diactoros\ServerRequestFactory;
-use Zend\Diactoros\StreamFactory;
-use Zend\Diactoros\UploadedFileFactory;
+use Laminas\Diactoros\ResponseFactory;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\StreamFactory;
+use Laminas\Diactoros\UploadedFileFactory;
 
 /**
  * @author   List of contributors <https://github.com/libgraviton/graviton/graphs/contributors>

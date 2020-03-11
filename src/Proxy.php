@@ -5,9 +5,9 @@
 namespace Graviton\PhpProxy;
 
 use GuzzleHttp\Client;
+use Laminas\Diactoros\Uri;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\Uri;
 
 /**
  * proxies request from one place to another.. thanks jenssegers for the first approach ;-)
